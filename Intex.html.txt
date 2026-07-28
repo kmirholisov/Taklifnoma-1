@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Nikoh To'yi Taklifnomasi — Kamronbek & Nmalumxon</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Great+Vibes&family=Montserrat:wght@300;400;600;700&display=swap" rel="stylesheet">
+  
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body, html {
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      font-family: 'Montserrat', sans-serif;
+      background-color: #0d0a12;
+      color: #fff;
+    }
+
+    /* OVERLAY */
+    #welcome-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: #110d1a;
+      z-index: 9999;
+      display: block;
+      text-align: center;
+      padding-top: 10vh;
+    }
+
+    .welcome-card {
+      background: #181324;
+      border: 2px solid #d4af37;
+      padding: 30px 20px;
+      border-radius: 20px;
+      max-width: 450px;
+      margin: 0 auto;
+      width: 90%;
+    }
+
+    .welcome-card h3 {
+      font-family: 'Cinzel', serif;
+      color: #f9e8a2;
+      letter-spacing: 2px;
+      font-size: 0.95rem;
+      margin-bottom: 10px;
+    }
+
+    .welcome-card h1 {
+      font-family: 'Great Vibes', cursive;
+      font-size: 3rem;
+      color: #d4af37;
+      margin-bottom: 15px;
+    }
+
+    .guest-title {
+      font-size: 1.2rem;
+      color: #fff;
+      margin-bottom: 25px;
+      font-weight: 300;
+    }
+
+    .guest-name-highlight {
+      color: #f9e8a2;
+      font-weight: 700;
+      font-size: 1.4rem;
+      display: block;
+      margin-top: 5px;
+    }
+
+    /* BUTTONS */
+    .btn-gold {
+      background: #d4af37;
+      color: #000;
+      border: none;
+      padding: 14px 28px;
+      font-size: 0.95rem;
+      font-weight: 700;
+      border-radius: 50px;
+      cursor: pointer;
+      font-family: 'Cinzel', serif;
+      display: inline-block;
+    }
+
+    .music-btn {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      z-index: 1000;
+      background: #000;
+      border: 1px solid #d4af37;
+      color: #f9e8a2;
+      width: 45px;
+      height: 45px;
+      border-radius: 50%;
+      cursor: pointer;
+      font-size: 1.2rem;
+      line-height: 43px;
+      text-align: center;
+    }
+
+    /* SLIDER */
+    .slider-container {
+      width: 100%;
+      height: 100%;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .slides-wrapper {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 400%;
+      height: 100%;
+      transition: left 0.6s ease;
+    }
+
+    .slide {
+      width: 25%;
+      height: 100%;
+      float: left;
+      position: relative;
+      background: #0d0a12;
+      padding: 20px;
+      text-align: center;
+    }
+
+    .slide-content {
+      max-width: 500px;
+      margin: 50px auto 0 auto;
+      background: #181324;
+      border: 1px solid #d4af37;
+      border-radius: 20px;
+      padding: 30px 20px;
+    }
+
+    .house-title {
+      font-family: 'Cinzel', serif;
+      color: #f9e8a2;
+      font-size: 1.1rem;
+      letter-spacing: 2px;
+      margin-bottom: 5px;
+    }
+
+    .main-names {
+      font-family: 'Great Vibes', cursive;
+      font-size: 3.2rem;
+      color: #d4af37;
+      margin: 10px 0;
+      line-height: 1.2;
+    }
+
+    p.poetic {
+      font-size: 0.95rem;
+      line-height: 1.6;
+      color: #eaeaea;
+      margin-bottom: 20px;
+    }
+
+    .details-box {
+      border-top: 1px solid rgba(212, 175, 55, 0.3);
+      border-bottom: 1px solid rgba(212, 175, 55, 0.3);
+      padding: 15px 0;
+      margin: 20px 0;
+    }
+
+    .details-item {
+      font-size: 1rem;
+      margin: 8px 0;
+      color: #fff;
+    }
+
+    .details-item strong {
+      color: #f9e8a2;
+    }
+
+    .slider-nav {
+      position: absolute;
+      bottom: 25px;
+      width: 100%;
+      text-align: center;
+      z-index: 10;
+    }
+
+    .dot {
+      display: inline-block;
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.3);
+      border: 1px solid #d4af37;
+      cursor: pointer;
+      margin: 0 4px;
+    }
+
+    .dot.active {
+      background: #d4af37;
+      width: 25px;
+      border-radius: 10px;
+    }
+
+    /* WARNING BANNER */
+    .photo-warning-banner {
+      background: #4a0d0d;
+      border: 2px solid #ff4d4d;
+      padding: 15px 10px;
+      border-radius: 15px;
+      margin: 20px 0;
+    }
+
+    .photo-warning-banner h4 {
+      color: #ff4d4d;
+      font-size: 1.1rem;
+      font-family: 'Cinzel', serif;
+      margin-bottom: 5px;
+      text-transform: uppercase;
+    }
+
+    .photo-warning-banner p {
+      font-size: 0.95rem;
+      color: #ffffff;
+      font-weight: bold;
+    }
+
+    .btn-group {
+      margin-top: 15px;
+    }
+
+    .form-custom {
+      margin-top: 15px;
+    }
+
+    .form-custom input, .form-custom textarea {
+      width: 100%;
+      padding: 12px;
+      margin-bottom: 10px;
+      border-radius: 8px;
+      border: 1px solid #d4af37;
+      background: #000;
+      color: #fff;
+      font-family: 'Montserrat', sans-serif;
+    }
+  </style>
+</head>
+<body>
+
+  <audio id="bgMusic" loop preload="none">
+    <source src="music.mp3" type="audio/mpeg">
+  </audio>
+
+  <button class="music-btn" id="musicToggle" onclick="toggleMusic()">🎵</button>
+
+  <div id="welcome-overlay">
+    <div class="welcome-card">
+      <h3>PAYZIYEVLAR XONADONI</h3>
+      <h1>Taklifnoma</h1>
+      <div class="guest-title">
+        Xurmatli <span class="guest-name-highlight" id="guestNameDisplay">Bexruz</span>!
+      </div>
+      <p style="font-size: 0.9rem; color: #ccc; margin-bottom: 25px;">Sizni nikoh to'yimizga lutfan taklif etamiz</p>
+      <button class="btn-gold" onclick="startExperience()">Taklifnomani ochish ✉️</button>
+    </div>
+  </div>
+
+  <div class="slider-container">
+    <div class="slides-wrapper" id="slidesWrapper" style="left: 0%;">
+
+      <!-- SLIDE 1 -->
+      <div class="slide">
+        <div class="slide-content">
+          <div class="house-title">Payziyevlar Xonadoni</div>
+          <p style="font-size: 0.85rem; color: #f9e8a2; text-transform: uppercase;">Sizni taklif etadi</p>
+          <div class="main-names">Kamronbek<br>&<br>Nmalumxon</div>
+          
+          <p class="poetic">
+            Ikki qalbning muqaddas rishtalar ila bog'lanishiga, ezgu niyatlar va samimiy duolar ro'yobiga guvoh bo'lishingizdan behad mamnun bo'lamiz!
+          </p>
+
+          <div class="details-box">
+            <div class="details-item">📅 <strong>Sana:</strong> 28.09.2026-yil</div>
+            <div class="details-item">⏰ <strong>Vaqt:</strong> Soat 18:00 da</div>
+            <div class="details-item">📍 <strong>Manzil:</strong> "Oqsaroy" restorani</div>
+          </div>
+
+          <div class="btn-group">
+            <button class="btn-gold" onclick="goToSlide(1)">Sevgi Qissasi &rarr;</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- SLIDE 2 -->
+      <div class="slide">
+        <div class="slide-content">
+          <h2 style="font-family: 'Cinzel', serif; color: #d4af37; margin-bottom: 15px;">Qalblar Birlashuvi</h2>
+          <p class="poetic">
+            "Yulduzlar ko'kda go'zal, qalblar esa sevgida muqaddasdir. Taqdir yo'llarimizni tutashtirgan ushbu samimiy tuyg'ular bugun yangi oila koshonasiga poydevor qo'ymoqda."
+          </p>
+          <p class="poetic">
+            Kamronbek hamda Nmalumxonlarning birga bosib o'tadigan baxtli hayot yo'li va muqaddas nikoh to'ylarida siz kabi aziz insonlarni mehmonda ko'rish biz uchun yuksak sharafdir.
+          </p>
+
+          <div class="btn-group">
+            <button class="btn-gold" onclick="goToSlide(2)">Tashrifni Tasdiqlash &rarr;</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- SLIDE 3 -->
+      <div class="slide">
+        <div class="slide-content">
+          <h2 style="font-family: 'Cinzel', serif; color: #d4af37; margin-bottom: 10px;">Tashrifingiz</h2>
+          <p style="font-size: 0.95rem; color: #ddd;">Biz uchun o'rningiz juda qadrli. To'yga tashrif buyura olasizmi?</p>
+
+          <div class="btn-group" style="margin: 20px 0;">
+            <button class="btn-gold" onclick="sendRSVP('Albatta boraman! 🎉')">Boraman ✅</button> <br><br>
+            <button class="btn-gold" style="background: #444; color: #fff;" onclick="sendRSVP('Afsuski, bora olmayman 😔')">Bora olmayman ❌</button>
+          </div>
+
+          <div class="photo-warning-banner">
+            <h4>⚠️ MUHIM ESLATMA!</h4>
+            <p>ILTIMOS, TO'Y EGALARINI RASMGA OLMANG!</p>
+          </div>
+
+          <div class="btn-group">
+            <button class="btn-gold" onclick="goToSlide(3)">Tabrik Yuborish 💌</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- SLIDE 4 -->
+      <div class="slide">
+        <div class="slide-content">
+          <h2 style="font-family: 'Cinzel', serif; color: #d4af37; margin-bottom: 10px;">Dil Izhorlari</h2>
+          <p style="font-size: 0.85rem; color: #ccc;">Kamronbek va Nmalumxonlarning nikoh to'yiga o'z samimiy tabrigingizni yo'llang:</p>
+
+          <form class="form-custom" onsubmit="sendWish(event)">
+            <input type="text" id="wishSenderName" placeholder="Ismingiz" value="Bexruz" required>
+            <textarea id="wishMessage" rows="3" placeholder="Iliq tilaklaringiz..." required></textarea>
+            <button type="submit" class="btn-gold">Tabrikni Yuborish 💌</button>
+          </form>
+
+          <p id="statusMsg" style="margin-top: 12px; font-size: 0.9rem; color: #f9e8a2; font-weight: bold;"></p>
+
+          <div style="margin-top: 20px;">
+            <button class="btn-gold" style="font-size: 0.8rem; padding: 8px 20px;" onclick="goToSlide(0)">&larr; Boshiga qaytish</button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="slider-nav">
+      <div class="dot active" onclick="goToSlide(0)"></div>
+      <div class="dot" onclick="goToSlide(1)"></div>
+      <div class="dot" onclick="goToSlide(2)"></div>
+      <div class="dot" onclick="goToSlide(3)"></div>
+    </div>
+  </div>
+
+  <script>
+    var TELEGRAM_BOT_TOKEN = '8727889570:AAEEWSh5TrH7QTLAiSQ_goGREysKmYntcqs'; 
+    var TELEGRAM_CHAT_ID = '5707806340';
+
+    var currentSlide = 0;
+    var totalSlides = 4;
+    var autoSlideInterval;
+
+    function goToSlide(index) {
+      currentSlide = index;
+      var wrapper = document.getElementById('slidesWrapper');
+      wrapper.style.left = '-' + (currentSlide * 100) + '%';
+      
+      var dots = document.querySelectorAll('.dot');
+      for (var i = 0; i < dots.length; i++) {
+        if (i === currentSlide) {
+          dots[i].className = 'dot active';
+        } else {
+          dots[i].className = 'dot';
+        }
+      }
+
+      resetAutoSlide();
+    }
+
+    function nextSlide() {
+      currentSlide = (currentSlide + 1) % totalSlides;
+      goToSlide(currentSlide);
+    }
+
+    function startAutoSlide() {
+      autoSlideInterval = setInterval(nextSlide, 7000);
+    }
+
+    function resetAutoSlide() {
+      clearInterval(autoSlideInterval);
+      startAutoSlide();
+    }
+
+    window.onload = function() {
+      var query = window.location.search.substring(1);
+      var vars = query.split('&');
+      for (var i = 0; i < vars.length; i++) {
+        var pair = vars[i].split('=');
+        if (pair[0] === 'name') {
+          var name = decodeURIComponent(pair[1]);
+          document.getElementById('guestNameDisplay').innerHTML = name;
+          document.getElementById('wishSenderName').value = name;
+        }
+      }
+    };
+
+    function startExperience() {
+      var overlay = document.getElementById('welcome-overlay');
+      overlay.style.display = 'none';
+
+      var audio = document.getElementById('bgMusic');
+      try {
+        audio.play();
+      } catch (e) {}
+
+      startAutoSlide();
+    }
+
+    function toggleMusic() {
+      var audio = document.getElementById('bgMusic');
+      if (audio.paused) {
+        audio.play();
+      } else {
+        audio.pause();
+      }
+    }
+
+    function sendToTelegram(text) {
+      var url = 'https://api.telegram.org/bot' + TELEGRAM_BOT_TOKEN + '/sendMessage';
+      var xhr = new XMLHttpRequest();
+      xhr.open('POST', url, true);
+      xhr.setRequestHeader('Content-Type', 'application/json');
+      xhr.send(JSON.stringify({
+        chat_id: TELEGRAM_CHAT_ID,
+        text: text,
+        parse_mode: 'HTML'
+      }));
+    }
+
+    function sendRSVP(status) {
+      var guestName = document.getElementById('guestNameDisplay').innerHTML;
+      var text = "<b>💌 TO'YGA TASHRIF JAVOBI</b>\n\n<b>Mehmon:</b> " + guestName + "\n<b>Javob:</b> " + status;
+      sendToTelegram(text);
+      alert("Rahmat! Javobingiz yetkazildi.");
+    }
+
+    function sendWish(e) {
+      if (e.preventDefault) e.preventDefault();
+      var sender = document.getElementById('wishSenderName').value;
+      var msg = document.getElementById('wishMessage').value;
+      var statusMsg = document.getElementById('statusMsg');
+
+      var text = "<b>🎉 YANGI TABRIKNOMA!</b>\n\n<b>Yuboruvchi:</b> " + sender + "\n<b>Tabrik:</b> " + msg + "\n\n<i>Kamronbek & Nmalumxon Nikoh To'yi</i>";
+
+      statusMsg.innerHTML = "Yuborilmoqda...";
+      sendToTelegram(text);
+      setTimeout(function() {
+        statusMsg.innerHTML = "Ezguli tilagingiz yetkazildi! Rahmat 💖";
+        document.getElementById('wishMessage').value = '';
+      }, 1000);
+
+      return false;
+    }
+  </script>
+</body>
+</html>
