@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>To'yga Taklifnoma</title>
+  
+  <!-- Firebase SDK (Tabriklarni bazaga saqlash uchun) -->
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Georgia', serif;
+    }
+
+    body {
+      background: linear-gradient(135deg, #0f0c20, #1a1a2e, #24142c);
+      color: #fff;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      overflow-x: hidden;
+    }
+
+    /* Video Fon */
+    .video-bg {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      object-fit: cover;
+      z-index: 1;
+      pointer-events: none;
+    }
+
+    .overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(0, 0, 0, 0.65);
+      z-index: 2;
+      pointer-events: none;
+    }
+
+    /* Asosiy Konteyner */
+    .container {
+      position: relative;
+      z-index: 10;
+      width: 100%;
+      max-width: 500px;
+      padding: 20px;
+    }
+
+    /* Oynalar */
+    .page {
+      display: none;
+      animation: fadeIn 0.6s ease-in-out forwards;
+    }
+
+    .page.active {
+      display: block;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(15px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Karta dizayni */
+    .card {
+      background: rgba(20, 20, 25, 0.85);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(212, 175, 55, 0.4);
+      padding: 30px 20px;
+      border-radius: 20px;
+      text-align: center;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.8);
+    }
+
+    /* Juftlik Ismlari */
+    .couple-names {
+      font-size: 2.2rem;
+      color: #f3d082;
+      margin: 10px 0 15px 0;
+      font-weight: bold;
+      text-shadow: 0 0 10px rgba(243, 208, 130, 0.3);
+    }
+
+    h1, h2 {
+      color: #f3d082;
+      margin-bottom: 15px;
+      font-size: 1.8rem;
+    }
+
+    p {
+      font-size: 1.05rem;
+      line-height: 1.6;
+      margin-bottom: 18px;
+      color: #eaeaea;
+    }
+
+    .info-box {
+      background: rgba(212, 175, 55, 0.1);
+      border: 1px dashed #d4af37;
+      padding: 12px;
+      border-radius: 12px;
+      margin-bottom: 20px;
+    }
+
+    /* Tugmalar */
+    .btn-nav {
+      background: linear-gradient(135deg, #d4af37, #f3d082);
+      color: #111;
+      border: none;
+      padding: 12px 22px;
+      font-size: 0.95rem;
+      font-weight: bold;
+      border-radius: 25px;
+      cursor: pointer;
+      margin: 6px 3px;
+      transition: all 0.3s ease;
+    }
+
+    .btn-nav:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 15px rgba(243, 208, 130, 0.6);
+    }
+
+    .btn-enter {
+      font-size: 1.1rem;
+      padding: 15px 30px;
+      margin-top: 15px;
+    }
+
+    /* Musiqa Tugmasi */
+    .music-btn {
+      position: fixed;
+      top: 15px;
+      right: 15px;
+      z-index: 100;
+      background: rgba(0, 0, 0, 0.7);
+      border: 1px solid #d4af37;
+      color: #f3d082;
+      padding: 8px 14px;
+      border-radius: 20px;
+      cursor: pointer;
+      font-size: 0.85rem;
+      display: none;
+    }
+
+    /* Tabrik Formasi */
+    .wish-form {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+
+    .wish-form input, .wish-form textarea {
+      width: 100%;
+      padding: 12px;
+      border-radius: 10px;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      background: rgba(255, 255, 255, 0.1);
+      color: #fff;
+      font-size: 1rem;
+      outline: none;
+    }
+
+    .wish-form input::placeholder, .wish-form textarea::placeholder {
+      color: #aaa;
+    }
+
+    .wishes-list {
+      max-height: 200px;
+      overflow-y: auto;
+      text-align: left;
+      margin-top: 10px;
+    }
+
+    .wish-item {
+      background: rgba(255, 255, 255, 0.08);
+      padding: 10px 14px;
+      border-radius: 10px;
+      margin-bottom: 10px;
+      border-left: 3px solid #f3d082;
+      font-size: 0.95rem;
+    }
+
+    .wish-item strong {
+      color: #f3d082;
+      display: block;
+      margin-bottom: 2px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Background Video -->
+  <video class="video-bg" autoplay muted loop playsinline>
+    <source src="https://assets.mixkit.co/videos/preview/mixkit-wedding-rings-in-a-glass-box-41581-large.mp4" type="video/mp4">
+  </video>
+  <div class="overlay"></div>
+
+  <!-- Audio Player -->
+  <audio id="bgMusic" loop>
+    <source src="music.mp3" type="audio/mpeg">
+  </audio>
+
+  <!-- Musiqa Tugmasi -->
+  <button class="music-btn" id="musicBtn" onclick="toggleMusic()">🎵 Musiqa: <span id="musicStatus">Yoniq</span></button>
+
+  <div class="container">
+    
+    <!-- 0-OYNA: KIRISH OYNASI -->
+    <section class="page active" id="page0">
+      <div class="card">
+        <p style="text-transform: uppercase; letter-spacing: 2px; font-size: 0.9rem; color: #d4af37;">To'y Taklifnomasi</p>
+        <div class="couple-names">[Kuyov Ismi] & [Kelin Ismi]</div>
+        <p>Aziz mehmonimiz, bizning quvonchli kunimizga xush kelibsiz!</p>
+        <button class="btn-nav btn-enter" onclick="enterInvitation()">Taklifnomani ochish ✉️</button>
+      </div>
+    </section>
+
+    <!-- 1-OYNA: ASOSIY TAKLIFNOMA -->
+    <section class="page" id="page1">
+      <div class="card">
+        <p style="color: #d4af37; text-transform: uppercase; font-size: 0.85rem;">Nikoh To'yi</p>
+        <div class="couple-names">[Kuyov Ismi] & [Kelin Ismi]</div>
+        <p><strong>Muhtaram va qadrli mehmonimiz!</strong></p>
+        <p>Qalblarimiz sevgiga, orzularimiz ezgulikka to'lgan ushbu saodatli kunda Sizni yonimizda ko'rishdan behad mamnun bo'lamiz. Baxtli kunimizga fayz bag'ishlab, quvonchimizga sherik bo'ling!</p>
+        
+        <div class="info-box">
+          📅 <strong>Sana:</strong> 25-Sentyabr, 2026-yil<br>
+          ⏰ <strong>Vaqt:</strong> 18:00<br>
+          📍 <strong>Manzil:</strong> "Versal" Tantanalar Saroyi
+        </div>
+
+        <div>
+          <button class="btn-nav" onclick="showPage('page2')">Sevgi Qissasi &rarr;</button>
+          <button class="btn-nav" onclick="showPage('page3')">Tabrik Yozish 💌</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- 2-OYNA: SEVGI QISSASI -->
+    <section class="page" id="page2">
+      <div class="card">
+        <h2>Bizning Sevgi Qissamiz</h2>
+        <p>Tasodifiy bir nigohdan boshlangan [Kuyov Ismi] va [Kelin Ismi]ning uchrashuvi vaqt o'tib ikki qalbni bir-biriga uzviy bog'ladi. Birga o'tkazilgan har bir kun, samimiy suhbatlar va umumiy orzularimiz bizni eng muhim qaror sari yetakladi.</p>
+        <p>Yillar davomida avaylab kelingan his-tuyg'ularimiz bugun oila deb atalmish muqaddas koshonaga poydevor bo'lmoqda. Endi esa biz hayotimizning yangi va eng go'zal sahifasini birgalikda ochmoqchimiz.</p>
+        <div>
+          <button class="btn-nav" onclick="showPage('page1')">&larr; Orqaga</button>
+          <button class="btn-nav" onclick="showPage('page3')">Tabriklarga o'tish &rarr;</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- 3-OYNA: TABRIKLAR -->
+    <section class="page" id="page3">
+      <div class="card">
+        <h2>Dil Izhorlari va Tabriklar</h2>
+        <p>[Kuyov Ismi] hamda [Kelin Ismi]ga o'z ezgu niyatlaringiz va tabriklaringizni qoldiring!</p>
+        
+        <form class="wish-form" onsubmit="addWish(event)">
+          <input type="text" id="guestName" placeholder="Ismingiz" required>
+          <textarea id="guestMessage" rows="3" placeholder="Iliq tilaklaringiz..." required></textarea>
+          <button type="submit" class="btn-nav">Tabrikni Yuborish 💌</button>
+        </form>
+
+        <div class="wishes-list" id="wishesList">
+          <!-- Bazadan keladigan tabriklar shu yerda chiqadi -->
+        </div>
+
+        <div style="margin-top: 15px;">
+          <button class="btn-nav" onclick="showPage('page1')">&larr; Bosh sahifa</button>
+        </div>
+      </div>
+    </section>
+
+  </div>
+
+  <script>
+    // Firebase sozlamalari
+    const firebaseConfig = {
+      databaseURL: "https://taklifnoma-1-default-rtdb.firebaseio.com/"
+    };
+
+    firebase.initializeApp(firebaseConfig);
+    const database = firebase.database();
+    const wishesRef = database.ref('wishes');
+
+    const music = document.getElementById('bgMusic');
+    const musicBtn = document.getElementById('musicBtn');
+    const musicStatus = document.getElementById('musicStatus');
+
+    // Taklifnomani ochish
+    function enterInvitation() {
+      music.play().then(() => {
+        musicStatus.innerText = "Yoniq";
+      }).catch(err => console.log("Musiqa xatoligi:", err));
+
+      musicBtn.style.display = "block";
+      showPage('page1');
+    }
+
+    // Oynalarni almashtirish
+    function showPage(pageId) {
+      document.querySelectorAll('.page').forEach(page => {
+        page.classList.remove('active');
+      });
+      document.getElementById(pageId).classList.add('active');
+    }
+
+    // Musiqa boshqaruvi
+    function toggleMusic() {
+      if (music.paused) {
+        music.play();
+        musicStatus.innerText = "Yoniq";
+      } else {
+        music.pause();
+        musicStatus.innerText = "O'chirilgan";
+      }
+    }
+
+    // Tabriklarni bazaga saqlash
+    function addWish(event) {
+      event.preventDefault();
+      
+      const nameInput = document.getElementById('guestName');
+      const messageInput = document.getElementById('guestMessage');
+
+      if(nameInput.value.trim() && messageInput.value.trim()) {
+        const newWishRef = wishesRef.push();
+        newWishRef.set({
+          name: nameInput.value.trim(),
+          message: messageInput.value.trim(),
+          timestamp: Date.now()
+        });
+
+        nameInput.value = '';
+        messageInput.value = '';
+      }
+    }
+
+    // Bazadan tabriklarni yuklash
+    wishesRef.on('child_added', (snapshot) => {
+      const wish = snapshot.val();
+      const wishesList = document.getElementById('wishesList');
+
+      const wishDiv = document.createElement('div');
+      wishDiv.className = 'wish-item';
+      wishDiv.innerHTML = `<strong>${escapeHtml(wish.name)}</strong>${escapeHtml(wish.message)}`;
+
+      wishesList.prepend(wishDiv);
+    });
+
+    function escapeHtml(text) {
+      return text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+    }
+  </script>
+</body>
+</html>
