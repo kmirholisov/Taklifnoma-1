@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>To'y Taklifnomasi</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Georgia', serif;
+    }
+
+    body {
+      background-color: #000;
+      color: #fff;
+      overflow-x: hidden;
+    }
+
+    /* Video Fon Style */
+    .video-bg {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      object-fit: cover;
+      z-index: -2;
+    }
+
+    /* Video ustidagi qorong'i shaffof qatlam (Matnlar o'qilishi uchun) */
+    .overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(0, 0, 0, 0.55);
+      z-index: -1;
+    }
+
+    /* Oynalar (Sections) */
+    .page {
+      display: none;
+      min-height: 100vh;
+      padding: 40px 20px;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      animation: fadeIn 0.8s ease-in-out forwards;
+    }
+
+    .page.active {
+      display: flex;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Kartochka konteyneri */
+    .card {
+      background: rgba(255, 255, 255, 0.12);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.25);
+      padding: 30px 20px;
+      border-radius: 20px;
+      max-width: 500px;
+      width: 100%;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.37);
+    }
+
+    h1, h2 {
+      color: #f3d082;
+      margin-bottom: 15px;
+    }
+
+    p {
+      font-size: 1.05rem;
+      line-height: 1.6;
+      margin-bottom: 20px;
+    }
+
+    /* Tugmalar */
+    .btn-nav {
+      background: linear-gradient(135deg, #d4af37, #f3d082);
+      color: #111;
+      border: none;
+      padding: 12px 24px;
+      font-size: 1rem;
+      font-weight: bold;
+      border-radius: 25px;
+      cursor: pointer;
+      margin: 10px 5px;
+      transition: all 0.3s ease;
+    }
+
+    .btn-nav:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 15px rgba(243, 208, 130, 0.6);
+    }
+
+    /* Form va Tabriklar Bo'limi */
+    .wish-form {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin-bottom: 25px;
+    }
+
+    .wish-form input, .wish-form textarea {
+      width: 100%;
+      padding: 12px;
+      border-radius: 10px;
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      background: rgba(255, 255, 255, 0.2);
+      color: #fff;
+      font-size: 1rem;
+      outline: none;
+    }
+
+    .wish-form input::placeholder, .wish-form textarea::placeholder {
+      color: #ddd;
+    }
+
+    .wishes-list {
+      max-height: 200px;
+      overflow-y: auto;
+      text-align: left;
+      margin-top: 15px;
+      padding-right: 5px;
+    }
+
+    .wish-item {
+      background: rgba(0, 0, 0, 0.4);
+      padding: 10px 15px;
+      border-radius: 10px;
+      margin-bottom: 10px;
+      border-left: 3px solid #f3d082;
+    }
+
+    .wish-item strong {
+      color: #f3d082;
+      display: block;
+      margin-bottom: 3px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Orqa fon videosi va qorong'i overlay -->
+  <video class="video-bg" autoplay muted loop id="myVideo">
+    <source src="https://assets.mixkit.co/videos/preview/mixkit-wedding-rings-in-a-glass-box-41581-large.mp4" type="video/mp4">
+  </video>
+  <div class="overlay"></div>
+
+  <!-- 1-OYNA: TAKLIFNOMA -->
+  <section class="page active" id="page1">
+    <div class="card">
+      <h1>To'yga Taklifnoma</h1>
+      <p><strong>Muhtaram va qadrli mehmonimiz!</strong></p>
+      <p>Qalblarimiz sevgiga, orzularimiz ezgulikka to'lgan ushbu saodatli kunda Sizni yonimizda ko'rishdan behad mamnun bo'lamiz. Baxtli kunimizga fayz bag'ishlab, quvonchimizga sherik bo'ling!</p>
+      <p>
+        📅 <strong>Sana:</strong> 25-Sentyabr, 2026-yil<br>
+        ⏰ <strong>Vaqt:</strong> 18:00<br>
+        📍 <strong>Manzil:</strong> "Versal" Tantanalar Saroyi
+      </p>
+      <div>
+        <button class="btn-nav" onclick="showPage('page2')">Sevgi Qissasi &rarr;</button>
+        <button class="btn-nav" onclick="showPage('page3')">Tabrik Yoza Olish &rarr;</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- 2-OYNA: SEVGI QISSASI -->
+  <section class="page" id="page2">
+    <div class="card">
+      <h2>Bizning Sevgi Qissamiz</h2>
+      <p>Tasodifiy bir nigohdan boshlangan uchrashuvimiz vaqt o'tib ikki qalbni bir-biriga uzviy bog'ladi. Birga o'tkazilgan har bir kun, samimiy suhbatlar va umumiy orzularimiz bizni eng muhim qaror sari yetakladi.</p>
+      <p>Yillar davomida avaylab kelingan his-tuyg'ularimiz bugun oila deb atalmish muqaddas koshonaga poydevor bo'lmoqda. Endi esa biz hayotimizning yangi va eng go'zal sahifasini birgalikda ochmoqchimiz.</p>
+      <div>
+        <button class="btn-nav" onclick="showPage('page1')">&larr; Orqaga</button>
+        <button class="btn-nav" onclick="showPage('page3')">Tabriklarga o'tish &rarr;</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3-OYNA: MEHMONLAR TABRIGI -->
+  <section class="page" id="page3">
+    <div class="card">
+      <h2>Dil Izhorlari va Tabriklar</h2>
+      <p>Ushbu quvonchli kunda o'z ezgu niyatlaringiz va tabriklaringizni qoldiring!</p>
+      
+      <!-- Tabrik Yozish Formasi -->
+      <form class="wish-form" id="wishForm" onsubmit="addWish(event)">
+        <input type="text" id="guestName" placeholder="Ismingiz" required>
+        <textarea id="guestMessage" rows="3" placeholder="Iliq tilaklaringiz va tabrikingiz..." required></textarea>
+        <button type="submit" class="btn-nav">Tabrikni Yuborish 💌</button>
+      </form>
+
+      <!-- Yozilgan Tabriklar Ro'yxati -->
+      <div class="wishes-list" id="wishesList">
+        <div class="wish-item">
+          <strong>Sardor va Dilnoza</strong>
+          Chiroyli juftlikka baxt, mustahkam oila va doimiy quvonch tilaymiz!
+        </div>
+      </div>
+
+      <div style="margin-top: 15px;">
+        <button class="btn-nav" onclick="showPage('page1')">&larr; Bosh sahifa</button>
+      </div>
+    </div>
+  </section>
+
+  <script>
+    // Sahifalarni (Oynalarni) almashtirish funksiyasi
+    function showPage(pageId) {
+      document.querySelectorAll('.page').forEach(page => {
+        page.classList.remove('active');
+      });
+      document.getElementById(pageId).classList.add('active');
+    }
+
+    // Mehmonlar tabrigini qo'shish funksiyasi
+    function addWish(event) {
+      event.preventDefault();
+      
+      const nameInput = document.getElementById('guestName');
+      const messageInput = document.getElementById('guestMessage');
+      const wishesList = document.getElementById('wishesList');
+
+      if(nameInput.value.trim() && messageInput.value.trim()) {
+        // Yangi tabrik elementini yaratish
+        const wishDiv = document.createElement('div');
+        wishDiv.className = 'wish-item';
+        wishDiv.innerHTML = `<strong>${nameInput.value}</strong>${messageInput.value}`;
+
+        // Ro'yxatning eng tepasiga qo'shish
+        wishesList.prepend(wishDiv);
+
+        // Maydonlarni tozalash
+        nameInput.value = '';
+        messageInput.value = '';
+      }
+    }
+  </script>
+</body>
+</html>
